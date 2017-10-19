@@ -1,1 +1,1 @@
-# tanks
+Sterowanie: WASD
