@@ -26,6 +26,7 @@ public:
 	bool getInput(sf::Event &e);
 	void update();
 	void draw(sf::RenderWindow *w);
+	void showDiodes(sf::RenderWindow *w);
 	void setDirection();
 	float getDirection() const;
 	~TankBase();

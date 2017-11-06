@@ -26,6 +26,7 @@ void Tank::draw(sf::RenderWindow * w)
 {
 	legs.draw(w);
 	head.draw(w);
+	legs.showDiodes(w);
 }
 
 Tank::~Tank()

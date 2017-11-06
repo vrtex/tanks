@@ -16,7 +16,7 @@ Worldmap::Worldmap(std::string mapFile)
 	for(int j = 0; j < m; ++j)
 	{
 		obstacleFile >> n;
-		table = new float[n * sizeof(float)];
+		table = new float[n * 2];
 		for(int i = 0; i < n * 2; i += 2)
 		{
 			obstacleFile >> *(table + i);

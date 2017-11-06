@@ -16,7 +16,7 @@ TankBase::TankBase(sf::Vector2f pos, int rot, TankTurret *h) :
 	setDirection();
 	currentRotation = 0;
 	currentSpeed = 0;
-	speed = 3;
+	speed = 1.2;
 	rotateSpeed = 2;
 	hitbox.setFillColor(sf::Color::Magenta);
 	hitbox.setRadius(sqrt(tex.getSize().x * tex.getSize().x / 4 + tex.getSize().y * tex.getSize().y / 4));
@@ -120,7 +120,10 @@ void TankBase::draw(sf::RenderWindow * w)
 {
 	//w->draw(hitbox);
 	w->draw(car);
+}
 
+void TankBase::showDiodes(sf::RenderWindow * w)
+{
 	backDiode.draw(w);
 	leftDiode.draw(w);
 	rightDiode.draw(w);

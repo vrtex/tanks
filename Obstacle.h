@@ -9,5 +9,7 @@ public:
 	~Obstacle();
 private:
 	sf::VertexArray shape;
+	sf::Texture logo;
+	sf::Sprite flag;
 };
 
