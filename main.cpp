@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "TankBase.h"
+#include "Tank.h"
 #include "Worldmap.h"
 
 int main()
@@ -8,8 +8,9 @@ int main()
 
 	sf::RenderWindow window(sf::VideoMode(battleGorund.getMapSize().x, battleGorund.getMapSize().y), "Tanks");
 	window.setFramerateLimit(60);
+	window.setKeyRepeatEnabled(false);
 
-	TankBase maus;
+	Tank maus(760 / 2, 500 / 2, 0);
 	sf::Event e;
 	while(window.isOpen())
 	{
@@ -17,8 +18,9 @@ int main()
 		{
 			if(e.type == sf::Event::Closed)
 				window.close();
-			maus.getInput(e);
+			if(maus.getInput(e)) break;
 		}
+		maus.update();
 		window.clear(sf::Color::White);
 		battleGorund.draw(&window);
 		maus.draw(&window);

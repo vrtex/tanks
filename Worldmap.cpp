@@ -48,8 +48,6 @@ void Worldmap::draw(sf::RenderWindow * w) const
 	{
 		o->draw(w);
 	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		w->draw(debugGrid);
 }
 
 void Worldmap::loadObstacle(int n, float * v)
