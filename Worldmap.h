@@ -12,6 +12,7 @@ public:
 	Worldmap(std::string mapFile);
 	void draw(sf::RenderWindow *w) const;
 	void loadObstacle(int n, float *v);
+	std::vector<Obstacle *> * getObstacles();
 	sf::Vector2f getMapSize() const;
 	~Worldmap();
 private:

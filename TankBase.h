@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 #include "TankTurret.h"
+
+class Obstacle;
 class TankBase
 {
 private:
@@ -13,7 +15,6 @@ private:
 		void move(sf::Vector2f dir);
 		void draw(sf::RenderWindow *w);
 		void flipSwitch();
-		void update();
 		void rotate(float angle);
 		sf::CircleShape blob;
 		sf::Color onColor, offColor;
@@ -29,12 +30,13 @@ public:
 	void showDiodes(sf::RenderWindow *w);
 	void setDirection();
 	float getDirection() const;
+	void setObstacles(std::vector<Obstacle *> *obst);
 	~TankBase();
 private:
 	TankTurret *head;
 	sf::Sprite car;
 	sf::Texture tex;
-	sf::CircleShape hitbox;
+	sf::RectangleShape hitbox;
 	sf::Vector2f halfSize;
 	diode leftDiode, rightDiode, backDiode;
 	bool blinking;
@@ -44,6 +46,8 @@ private:
 	float speed, rotateSpeed;
 	const float backPenalty = 0.75;
 	sf::Vector2f direction;
+
+	std::vector<Obstacle *> *obstacles;
 	float PI;
 };
 

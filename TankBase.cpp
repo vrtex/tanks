@@ -1,5 +1,5 @@
 #include "TankBase.h"
-
+#include "Obstacle.h"
 
 
 TankBase::TankBase(sf::Vector2f pos, int rot, TankTurret *h) :
@@ -19,11 +19,12 @@ TankBase::TankBase(sf::Vector2f pos, int rot, TankTurret *h) :
 	speed = 1.2;
 	rotateSpeed = 2;
 	hitbox.setFillColor(sf::Color::Magenta);
-	hitbox.setRadius(sqrt(tex.getSize().x * tex.getSize().x / 4 + tex.getSize().y * tex.getSize().y / 4));
-	hitbox.setOrigin(hitbox.getRadius(), hitbox.getRadius());
+	sf::Vector2f hitboxSize(tex.getSize().x + 25, tex.getSize().y + 25);
+	hitbox.setSize(hitboxSize);
+	hitbox.setOrigin(hitboxSize.x / 2, hitboxSize.y / 2);
 	hitbox.setPosition(pos);
-	halfSize = (sf::Vector2f)tex.getSize();
 
+	halfSize = (sf::Vector2f)tex.getSize();
 	
 	backDiode.setOffset(sf::Vector2f(-30, 0));
 	leftDiode.setOffset(sf::Vector2f(20, -15));
@@ -92,6 +93,7 @@ bool TankBase::getInput(sf::Event &e)
 
 void TankBase::update()
 {
+	bool clearPath = true;
 	if(blinking && blinkTimer.getElapsedTime().asMilliseconds() > 500)
 	{
 		backDiode.flipSwitch();
@@ -99,26 +101,41 @@ void TankBase::update()
 		rightDiode.flipSwitch();
 		blinkTimer.restart();
 	}
-	car.rotate(currentRotation);
-	head->baseRotation(currentRotation);
-	if(fabs(currentRotation) > rotateSpeed * 0.5) setDirection();
-	backDiode.rotate(currentRotation);
-	leftDiode.rotate(currentRotation);
-	rightDiode.rotate(currentRotation);
-
-	car.move(direction * currentSpeed);
 	hitbox.move(direction * currentSpeed);
-	head->move(direction * currentSpeed);
-	backDiode.move(direction * currentSpeed);
-	leftDiode.move(direction * currentSpeed);
-	rightDiode.move(direction * currentSpeed);
-	
-	backDiode.update();
+	hitbox.rotate(currentRotation);
+	for(int i = 0; i < obstacles->size(); ++i)
+	{
+		if(obstacles->at(i)->checkCollision(hitbox))
+		{
+			clearPath = false;
+			break;
+		}
+	}
+	if(clearPath)
+	{
+		car.rotate(currentRotation);
+		head->baseRotation(currentRotation);
+		if(fabs(currentRotation) > rotateSpeed * 0.5) setDirection();
+		backDiode.rotate(currentRotation);
+		leftDiode.rotate(currentRotation);
+		rightDiode.rotate(currentRotation);
+		car.move(direction * currentSpeed);
+		head->move(direction * currentSpeed);
+		backDiode.move(direction * currentSpeed);
+		leftDiode.move(direction * currentSpeed);
+		rightDiode.move(direction * currentSpeed);
+	}
+	else
+	{
+		hitbox.move(-direction * currentSpeed);
+		hitbox.rotate(-currentRotation);
+	}
+
 }
 
 void TankBase::draw(sf::RenderWindow * w)
 {
-	//w->draw(hitbox);
+	w->draw(hitbox);
 	w->draw(car);
 }
 
@@ -137,6 +154,11 @@ void TankBase::setDirection()
 float TankBase::getDirection() const
 {
 	return car.getRotation();
+}
+
+void TankBase::setObstacles(std::vector<Obstacle*> *obst)
+{
+	obstacles = obst;
 }
 
 
@@ -177,10 +199,6 @@ void TankBase::diode::flipSwitch()
 	else blob.setFillColor(offColor);
 }
 
-void TankBase::diode::update()
-{
-
-}
 
 void TankBase::diode::rotate(float angle)
 {

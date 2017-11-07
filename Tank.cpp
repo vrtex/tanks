@@ -1,4 +1,5 @@
 #include "Tank.h"
+#include "Obstacle.h"
 
 
 
@@ -13,6 +14,11 @@ bool Tank::getInput(sf::Event & e)
 	if(legs.getInput(e)) return true;
 	else if(head.getInput(e)) return true;
 	return false;
+}
+
+void Tank::setObstacles(std::vector<Obstacle*> *obst)
+{
+	legs.setObstacles(obst);
 }
 
 void Tank::update()

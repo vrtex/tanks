@@ -55,6 +55,11 @@ void Worldmap::loadObstacle(int n, float * v)
 	obstacles.push_back(new Obstacle(n, v));
 }
 
+std::vector<Obstacle*> * Worldmap::getObstacles()
+{
+	return &obstacles;
+}
+
 sf::Vector2f Worldmap::getMapSize() const
 {
 	return (sf::Vector2f)mapTexture.getSize();
