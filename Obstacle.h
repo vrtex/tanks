@@ -2,9 +2,11 @@
 #include <SFML\Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include "triangle.h"
 class Obstacle
 {
-private:
+public:
+	
 	struct triangle
 	{
 		triangle(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3);
@@ -13,8 +15,9 @@ private:
 		sf::Vector2f p1, p2, p3;
 		float area;
 	};
-public:
+	
 	Obstacle(int n, float *vertices);
+	void showCoords();
 	void draw(sf::RenderWindow *w) const;
 	bool checkCollision(sf::RectangleShape &collider);
 	~Obstacle();

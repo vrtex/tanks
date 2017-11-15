@@ -7,7 +7,17 @@ class TankBase;
 class TankTurret
 {
 public:
-	TankTurret(sf::Vector2f pos, float rot);
+	struct TurretControl
+	{
+		sf::Keyboard::Key
+			turretUp,
+			turretDown,
+			turretLeft,
+			turretRight,
+			shoot;
+	};
+public:
+	TankTurret(sf::Vector2f pos, float rot, TurretControl cntr);
 	void connect(TankBase *l);
 	bool getInput(sf::Event &e);
 	void update();
@@ -35,6 +45,8 @@ private:
 	float shootingRange;
 	int cooldown;
 	sf::Clock cooldownTimer;
+
+	TurretControl buttons;
 
 	float PI;
 };

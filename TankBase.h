@@ -3,10 +3,22 @@
 #include <iostream>
 #include <cmath>
 #include "TankTurret.h"
+#include "Obstacle.h"
 
-class Obstacle;
+class Tank;
 class TankBase
 {
+public:
+	struct CarControl
+	{
+		sf::Keyboard::Key 
+			up,
+			down,
+			left,
+			right,
+			lights,
+			lightsMode;
+	};
 private:
 	struct diode
 	{
@@ -22,15 +34,17 @@ private:
 		bool on;
 	};
 
-public:
-	TankBase(sf::Vector2f pos, int rot, TankTurret *h);
+public:	
+	TankBase(sf::Vector2f pos, int rot, TankTurret *h, CarControl ctrl);
 	bool getInput(sf::Event &e);
 	void update();
 	void draw(sf::RenderWindow *w);
+	bool collidesWithTank(TankBase &other);
 	void showDiodes(sf::RenderWindow *w);
 	void setDirection();
 	float getDirection() const;
 	void setObstacles(std::vector<Obstacle *> *obst);
+	void setEnemies(std::vector<Tank *> *t);
 	~TankBase();
 private:
 	TankTurret *head;
@@ -48,6 +62,9 @@ private:
 	sf::Vector2f direction;
 
 	std::vector<Obstacle *> *obstacles;
+	std::vector<Tank *> *tanks;
+
+	CarControl buttons;
 	float PI;
 };
 
