@@ -2,17 +2,19 @@
 #include "TankBase.h"
 
 
-TankTurret::TankTurret(sf::Vector2f pos, float rot)
+TankTurret::TankTurret(sf::Vector2f pos, float rot, TurretControl cntr) :
+	buttons(cntr)
 {
 	legs = nullptr;
 	tex.loadFromFile("Res/turret_small_small.png");
 	tex.setSmooth(true);
 	turret.setTexture(tex);
 	turret.setOrigin(20, tex.getSize().y / 2);
-	turret.setPosition(760 / 2, 500 / 2);
+	turret.setPosition(pos);
 	turret.setRotation(rot);
 
-	absoluteRotation = currentPosition = rot;
+	absoluteRotation = rot;
+	currentPosition = 0;
 	rotateSpeed = 1;
 	currentRotation = 0;
 	PI = (float)acos(-1);
@@ -34,40 +36,42 @@ void TankTurret::connect(TankBase *l)
 bool TankTurret::getInput(sf::Event & e)
 {
 	if(e.type == sf::Event::KeyPressed)
-		switch(e.key.code)
+	{
+		if(e.key.code == buttons.turretLeft)
 		{
-		case sf::Keyboard::Q:
 			currentRotation = -rotateSpeed;
-			break;
-		case sf::Keyboard::E:
-			currentRotation = rotateSpeed;
-			break;
-		case sf::Keyboard::Space:
-			shoot();
-			break;
-		case sf::Keyboard::LShift:
-			setRange(leanStep);
-			break;
-		case sf::Keyboard::LControl:
-			setRange(-leanStep);
-			break;
-		default:
-			break;
+			return true;
 		}
-	else if(e.type == sf::Event::KeyReleased)
-		switch(e.key.code)
+		if(e.key.code == buttons.turretRight)
 		{
-		case sf::Keyboard::Q:
-			if(!sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-				currentRotation = 0;
-			break;
-		case sf::Keyboard::E:
-			if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-				currentRotation = 0;
-			break;
-		default:
-			break;
+			currentRotation = rotateSpeed;
+			return true;
 		}
+		if(e.key.code == buttons.shoot)
+		{
+			shoot();
+			return true;
+		}
+		if(e.key.code == buttons.turretUp)
+		{
+			setRange(leanStep);
+			return true;
+		}
+		if(e.key.code == buttons.turretDown)
+		{
+			setRange(-leanStep);
+			return true;
+		}
+	}
+
+	if(e.type == sf::Event::KeyReleased)
+	{
+		if(e.key.code == buttons.turretLeft || e.key.code == buttons.turretRight)
+		{
+			currentRotation = 0;
+			return true;
+		}
+	}
 	return false;
 }
 

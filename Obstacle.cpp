@@ -30,6 +30,15 @@ Obstacle::Obstacle(int n, float *vertices)
 	PI = (float)acos(-1);
 }
 
+void Obstacle::showCoords()
+{
+	std::cout << "yo\n";
+	for(int i = 0; i < shape.getVertexCount(); ++i)
+	{
+		std::cout << shape[i].position.x << " " << shape[i].position.y << "\n";
+	}
+}
+
 void Obstacle::draw(sf::RenderWindow * w) const
 {
 	w->draw(shape);
@@ -71,6 +80,7 @@ Obstacle::~Obstacle()
 {
 }
 
+
 Obstacle::triangle::triangle(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3):
 	p1(p1), p2(p2), p3(p3)
 {
@@ -90,3 +100,4 @@ bool Obstacle::triangle::collidesWith(sf::Vector2f point)
 	if(t1.getSize() + t2.getSize() + t3.getSize() > area) return false;
 	return true;
 }
+
